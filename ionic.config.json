@@ -1,0 +1,7 @@
+{
+  "name": "whenAreWeGonnaBe",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
