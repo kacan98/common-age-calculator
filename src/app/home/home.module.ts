@@ -5,9 +5,11 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 import { HomePage } from './home.page';
 import { HomePageRoutingModule } from './home-routing.module';
-import { MessageComponentModule } from '../message/message.module';
 import {PeopleComponent} from "../people/people.component";
 import {TimeAgoPipe} from "time-ago-pipe";
+import {TranslateModule} from "@ngx-translate/core";
+import {EditPersonComponent} from "../edit-person/edit-person.component";
+import {ErrorMessageComponent} from "../error-message/error-message.component";
 
 @Pipe({
   name: 'timeAgo',
@@ -20,11 +22,11 @@ export class TimeAgoExtendsPipe extends TimeAgoPipe {}
     CommonModule,
     FormsModule,
     IonicModule,
-    MessageComponentModule,
     HomePageRoutingModule,
     ReactiveFormsModule,
+    TranslateModule,
   ],
-  declarations: [HomePage, PeopleComponent, TimeAgoExtendsPipe],
+  declarations: [HomePage, PeopleComponent, TimeAgoExtendsPipe, EditPersonComponent, ErrorMessageComponent],
   providers: [TimeAgoPipe],
 
 })

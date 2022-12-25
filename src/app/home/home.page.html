@@ -1,81 +1,65 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <div class="ion-margin">
-      Kdy bude těmto lidem dohromady
-      <ion-input
-        style="max-width: 70px; display: inline-block"
-        type="number"
-        [(ngModel)]="nrOfYearsFromToday"
-        (ngModelChange)="adjustResult()"
-      ></ion-input>
-      roků?
-    </div>
-  </ion-toolbar>
-  <ion-list *ngIf="addingVisible">
-    <form [formGroup]="form" (ngSubmit)="addAPerson()">
-<!--      <ion-list-header>Někoho přidat</ion-list-header>-->
-      <ion-item>
-        <ion-label position="floating">Jméno</ion-label>
-        <ion-input formControlName="name" placeholder="Enter text"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label>Datum narození</ion-label>
-        <ion-datetime-button datetime="datetime"></ion-datetime-button>
-
-        <ion-modal [keepContentsMounted]="true">
-          <ng-template>
-            <ion-datetime
-              minuteValues="0"
-              show-default-buttons="true"
-              formControlName="dateOfBirth"
-              id="datetime"
-            ></ion-datetime>
-          </ng-template>
-        </ion-modal>
-      </ion-item>
-      <ion-button
-        type="submit"
-        expand="block"
-        class="ion-margin-horizontal"
-        [disabled]="form.invalid"
-        >Přidat někoho nového</ion-button
-      >
-    </form>
-  </ion-list>
+<div style="position: relative">
+  <ion-header [translucent]="true" *ngIf="!!people?.length || addingVisible">
+    <ion-toolbar>
+      <div class="ion-margin" *ngIf="!!people?.length">
+        {{"When are all these people going to be" | translate}}
+        <ion-input
+          step="100"
+          style="max-width: 70px; display: inline-block"
+          type="number"
+          min="0"
+          [(ngModel)]="targetNrOfYears"
+          (ngModelChange)="setYear(targetNrOfYears)"
+        ></ion-input>
+        {{'years old?'|translate}}
+      </div>
+      <app-edit-person *ngIf="addingVisible"></app-edit-person>
+    </ion-toolbar>
+  </ion-header>
   <div
     style="
       display: flex;
       justify-content: center;
       position: absolute;
       left: 45%;
+      z-index: 2;
     "
   >
     <ion-button color="light" (click)="toggleVisibility()"
-      ><ion-icon [name]="addingVisible ? 'arrow-up' : 'arrow-down'"></ion-icon
+      ><ion-icon [name]="addingVisible ? 'arrow-up' : 'add'"></ion-icon
     ></ion-button>
   </div>
-</ion-header>
+</div>
 
 <ion-content>
-  <ion-list>
-    <ion-item *ngFor="let person of people">
+  <ion-list *ngIf="people?.length; else empty">
+    <ion-item *ngFor="let person of people;" (click)="openEditModal(person)">
       <ion-label>
         <h3>{{ person.name }}</h3>
         <p>
-          {{ 'Narozeniny: ' + (person.dateOfBirth | date : 'dd. MM. YYYY') }}
+          {{ ('Birthday' | translate )+ ': ' + (person.dateOfBirth | date :
+          'dd. MM. YYYY') }}
         </p>
         <p *ngIf="person.ageAtResult !== undefined">
-          {{ 'Tento den jí/jemu bude/bylo: ' + (person.ageAtResult) }}
+          <span *ngIf="person.ageAtResult < 0"
+            >{{'They were not born yet'|translate}}</span
+          >
+          <span *ngIf="person.ageAtResult >= 0"
+            >{{ ('This day they will be' | translate)+ ': ' +
+            (person.ageAtResult) }}</span
+          >
         </p>
       </ion-label>
-      <ion-icon name="trash" (click)="removePerson(person.name)"></ion-icon>
+      <ion-icon name="trash" (click)="removeAPerson(person)"></ion-icon>
     </ion-item>
   </ion-list>
+  <ng-template #empty>
+    <app-error-message [message]="message"></app-error-message
+  ></ng-template>
 </ion-content>
 
-<ion-footer class="ion-padding">
-  <div *ngIf="result">Well, on the: {{ result | date : 'dd. MM. YYYY' }}</div>
-  <div *ngIf="nicerResult">
-    Odpověď je {{ nicerResult | date : 'dd. MM. YYYY' }}.
+<ion-footer class="ion-padding" *ngIf="result">
+  <div>
+    {{('The answer is'| translate)}} {{ result | date : 'dd. MM. YYYY' }}
   </div>
 </ion-footer>
