@@ -2,7 +2,7 @@
   <form [formGroup]="form">
     <ion-item>
       <ion-label position="floating">{{'Name'|translate}}</ion-label>
-      <ion-input formControlName="name" placeholder="Enter text" clear-input="true"></ion-input>
+      <ion-input formControlName="name" placeholder="Enter text"></ion-input>
     </ion-item>
     <ion-list-header>{{'Day of birth'|translate}}</ion-list-header>
     <ion-item>
@@ -24,7 +24,16 @@
       expand="block"
       class="ion-margin-horizontal"
       [disabled]="form.invalid"
-    >{{'Add someone new'|translate}}</ion-button
+    >{{(this.person ? 'Save': 'Add someone new')|translate}}</ion-button
+    >
+    <ion-button
+      *ngIf="this.person"
+      (click)="cancel()"
+      expand="block"
+      class="ion-margin-horizontal"
+      color="danger"
+      fill="outline"
+    >{{'Cancel'|translate}}</ion-button
     >
   </form>
 </ion-list>

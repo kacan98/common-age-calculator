@@ -49,11 +49,10 @@ export class HomePage implements OnInit, OnDestroy {
   async openEditModal(person: Person) {
     const modal = await this.modalController.create({
       component: EditPersonComponent,
-      componentProps: { person,  },
+      componentProps: { person },
     });
 
     await modal.present()
-    await modal.dismiss();
   }
 
   removeAPerson(person: Person) {
