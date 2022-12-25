@@ -1,4 +1,4 @@
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Person } from './people.modet';
 import {
   BehaviorSubject,
@@ -10,7 +10,7 @@ import {
 @Injectable({
   providedIn: 'root',
 })
-export class PeopleService implements OnDestroy {
+export class PeopleService {
   private people = new BehaviorSubject<Person[]>([]);
   private result = new BehaviorSubject<Date | undefined>(undefined);
   private targetNrOfYears = new BehaviorSubject<number>(100);
@@ -83,10 +83,6 @@ export class PeopleService implements OnDestroy {
     }
     localStorage.setItem('targetNrOfYears', year.toString());
     this.targetNrOfYears.next(year);
-  }
-
-  ngOnDestroy() {
-    this.subscriptions.forEach((s) => s.unsubscribe());
   }
 
   private adjustResult() {
