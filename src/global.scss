@@ -26,10 +26,22 @@
 @import "~@ionic/angular/css/flex-utils.css";
 
 // Move bottom toast up: https://github.com/ionic-team/ionic-framework/issues/17499#issuecomment-473769869
+.toast-push-up{
+  &.md {
+    transform: translateY(-56px) !important;
+  }
+  &.ios {
+    transform: translateY(-50px) !important;
+  }
+}
 
-.md .toast-bottom {
-  transform: translateY(-56px) !important;
+.toast-push-down{
+  &.md {
+    transform: translateY(56px) !important;
+  }
+  &.ios {
+    transform: translateY(50px) !important;
+  }
 }
-.ios .toast-bottom {
-  transform: translateY(-50px) !important;
-}
+
+

@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { EditPersonComponent } from '../edit-person/edit-person.component';
 import { Person } from '../services/people/people.modet';
-import { PeopleService } from '../services/people/people.service';
+import {getAge, PeopleService} from '../services/people/people.service';
 import { Subscription, combineLatest } from 'rxjs';
 import { ErrorMessage } from '../error-message/error-message.component';
 
@@ -15,11 +15,17 @@ export class HomePage implements OnInit, OnDestroy {
   people?: Person[];
   result?: Date;
   targetNrOfYears = 100;
-  addingVisible = false;
   message: ErrorMessage = {
     text: 'Intro',
     header: 'Common birthday calculator',
-    actions: [{ callback: () => {this.addingVisible = true}, actionText:'Add someone new' }],
+    actions: [
+      {
+        callback: async () => {
+          await this.openEditModal()
+        },
+        actionText: 'Add someone new',
+      },
+    ],
   };
   private subscriptions: Subscription[] = [];
 
@@ -41,27 +47,35 @@ export class HomePage implements OnInit, OnDestroy {
       ]).subscribe(([result, targetYears, people]) => {
         this.result = result;
         this.targetNrOfYears = targetYears;
-        this.people = people;
+        this.people = people?.map((person)=>{
+          if(result){
+            person.ageAtResult = getAge(person.dateOfBirth, result)
+          }
+          return person
+        })
       })
     );
   }
 
-  toggleVisibility() {
-    this.addingVisible = !this.addingVisible;
-  }
+  async openEditModal(person?: Person, event?: Event) {
+    if(event){
+    event.stopPropagation();
+    }
 
-  async openEditModal(person: Person, event:Event) {
-    event.stopPropagation()
     const modal = await this.modalController.create({
       component: EditPersonComponent,
       componentProps: { person },
+      initialBreakpoint: 0.75,
+      breakpoints: [0.75],
+      backdropDismiss: true,
+      backdropBreakpoint: 0.25,
     });
 
     await modal.present();
   }
 
-  removeAPerson(person: Person, event:Event) {
-    event.stopPropagation()
+  removeAPerson(person: Person, event: Event) {
+    event.stopPropagation();
     this.peopleService.removeAPerson(person);
   }
 

@@ -1,13 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Person } from './people.modet';
-import {
-  BehaviorSubject,
-  combineLatest,
-  map,
-  Observable,
-} from 'rxjs';
-import {ToastController} from "@ionic/angular";
-import {TranslateService} from "@ngx-translate/core";
+import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
+import { ToastController } from '@ionic/angular';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root',
@@ -16,11 +11,16 @@ export class PeopleService {
   private people = new BehaviorSubject<Person[]>([]);
   private result = new BehaviorSubject<Date | undefined>(undefined);
   private targetNrOfYears = new BehaviorSubject<number>(100);
-  private toasts:HTMLIonToastElement[] = []
+  private toasts: HTMLIonToastElement[] = [];
 
-  constructor(private toastController:ToastController, private translateService:TranslateService) {
-    this.people.next(JSON.parse(localStorage.getItem('people') || '[]'))
-    this.targetNrOfYears.next(JSON.parse(localStorage.getItem('targetNrOfYears') || '100'))
+  constructor(
+    private toastController: ToastController,
+    private translateService: TranslateService
+  ) {
+    this.people.next(JSON.parse(localStorage.getItem('people') || '[]'));
+    this.targetNrOfYears.next(
+      JSON.parse(localStorage.getItem('targetNrOfYears') || '100')
+    );
     this.startResultAdjusting();
   }
 
@@ -36,7 +36,7 @@ export class PeopleService {
         return p.sort(
           (p1, p2) => p1.dateOfBirth.getTime() - p2.dateOfBirth.getTime()
         );
-      })
+      }),
     );
   }
 
@@ -48,7 +48,7 @@ export class PeopleService {
     return this.targetNrOfYears.asObservable();
   }
 
-  addAPerson(person: Person) {
+  async addAPerson(person: Person) {
     if (this.people) {
       const people = this.people.getValue();
       if (people) {
@@ -56,6 +56,11 @@ export class PeopleService {
         newPeople.push(person);
         localStorage.setItem('people', JSON.stringify(newPeople));
         this.people.next(newPeople);
+        await this.showAToast(
+          'The person was successfully added',
+          false,
+          'bottom'
+        );
       }
     }
   }
@@ -67,27 +72,38 @@ export class PeopleService {
       newPeople.push(updatedPerson);
       localStorage.setItem('people', JSON.stringify(newPeople));
       this.people.next(newPeople);
-      await this.showAToast('XYZ name successfully updated', {name: updatedPerson.name})
+      await this.showAToast('XYZ name successfully updated', true, 'bottom', {
+        name: updatedPerson.name,
+      });
     }
   }
 
-  private dismissAllToasts(){
-    this.toasts.forEach((t)=>t.dismiss())
+  private dismissAllToasts() {
+    this.toasts.forEach((t) => t.dismiss());
   }
 
-  private async showAToast(message:string, params?:{[key:string]:any}){
-    this.dismissAllToasts()
-    this.translateService.get(message,{params}).subscribe(async(translatedMessage)=>{
-      const toast = await this.toastController.create({
-        message: translatedMessage,
-        duration: 2000,
-        position: 'bottom',
-        cssClass: 'toast-bottom',
-        color:'success',
+  private async showAToast(
+    message: string,
+    pushPosition = true,
+    position: 'top' | 'bottom',
+    params?: { [key: string]: any }
+  ) {
+    this.dismissAllToasts();
+    const cssClass =
+      position === 'bottom' ? 'toast-push-up' : 'toast-push-down';
+    this.translateService
+      .get(message, { params })
+      .subscribe(async (translatedMessage) => {
+        const toast = await this.toastController.create({
+          message: translatedMessage,
+          duration: 2000,
+          position: 'top',
+          cssClass: pushPosition ? cssClass : '',
+          color: 'success',
+        });
+        this.toasts.push(toast);
+        await toast.present();
       });
-      this.toasts.push(toast)
-      await toast.present();
-    })
   }
 
   removeAPerson(person: Person) {
@@ -115,7 +131,7 @@ export class PeopleService {
     ]).subscribe(async ([targetNrOfYears, people]) => {
       if (targetNrOfYears < 1 || !people || !people.length) {
         this.result.next(undefined);
-        this.dismissAllToasts()
+        this.dismissAllToasts();
         return;
       }
       //sort mutates the original array
@@ -176,7 +192,13 @@ export class PeopleService {
           );
           theDay.setHours(0, 0, 0, 0);
           theDay.setFullYear(currentYear);
-          await this.showAToast('The date was successfully re-calculated',)
+          // TODO:Maybe move the toast up?
+          await this.showAToast(
+            'The date was successfully re-calculated',
+            true,
+            'top',
+            {}
+          );
           this.result.next(theDay);
         }
       }
@@ -194,7 +216,7 @@ export class PeopleService {
   }
 }
 
-const getAge = (birthday: Date, today: Date) => {
+export const getAge = (birthday: Date, today: Date) => {
   const birthDate = new Date(birthday);
   let age = today.getFullYear() - birthDate.getFullYear();
   const m = today.getMonth() - birthDate.getMonth();
@@ -202,25 +224,4 @@ const getAge = (birthday: Date, today: Date) => {
     age--;
   }
   return age;
-};
-
-export const toIsoStringWithoutTimezone = (date: Date): string => {
-  const pad = (num: number) => {
-    const norm = Math.floor(Math.abs(num));
-    return (norm < 10 ? '0' : '') + norm;
-  };
-
-  return (
-    date.getFullYear() +
-    '-' +
-    pad(date.getMonth() + 1) +
-    '-' +
-    pad(date.getDate()) +
-    'T' +
-    pad(date.getHours()) +
-    ':' +
-    pad(date.getMinutes()) +
-    ':' +
-    pad(date.getSeconds())
-  );
 };

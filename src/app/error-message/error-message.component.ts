@@ -29,7 +29,6 @@ export class ErrorMessageComponent {
   constructor(private settingsService: SettingsService, private translateService:TranslateService) {
     this.currentLang.valueChanges.subscribe((c)=>{
       if(c){
-        console.log(c)
       this.changeLanguage(c)
       }
     })

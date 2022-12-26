@@ -82,6 +82,7 @@ export class EditPersonComponent implements OnInit {
         name,
         dateOfBirth,
       });
+      this.form.reset()
     }}
 
   private async editAPerson(oldVersion: Person, editedVersion: Person) {

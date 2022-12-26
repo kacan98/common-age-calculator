@@ -1,39 +1,32 @@
-<div class="header-container" *ngIf="!!people?.length || addingVisible">
-  <ion-header [translucent]="true" >
-    <ion-toolbar>
-      <div class="ion-margin">
-        {{"When are all these people going to be" | translate}}
-        <ion-input
-          color="secondary"
-          step="100"
-          style="max-width: 70px; display: inline-block"
-          type="number"
-          min="0"
-          [(ngModel)]="targetNrOfYears"
-          (ngModelChange)="setYear(targetNrOfYears)"
-        ></ion-input>
-        {{'years old?'|translate}}
-      </div>
-      <app-edit-person *ngIf="addingVisible"></app-edit-person>
-    </ion-toolbar>
-  </ion-header>
-  <div
-    class="open-button-container"
-  >
-    <ion-button [class]="addingVisible ? 'editing-open':'editing-closed'" color="light" mode="md" (click)="toggleVisibility()"
-      ><ion-icon [name]="addingVisible ? 'arrow-up' : 'add'"></ion-icon
-    ></ion-button>
-  </div>
-</div>
+<ion-header [translucent]="true" *ngIf="!!people?.length">
+  <ion-toolbar>
+    <div class="ion-margin">
+      {{"When are all these people going to be" | translate}}
+      <ion-input
+        color="secondary"
+        step="100"
+        style="max-width: 70px; display: inline-block"
+        type="number"
+        min="0"
+        [(ngModel)]="targetNrOfYears"
+        (ngModelChange)="setYear(targetNrOfYears)"
+      ></ion-input>
+      {{'years old?'|translate}}
+    </div>
+  </ion-toolbar>
+</ion-header>
 
 <ion-content>
   <ion-list *ngIf="people?.length; else empty">
-    <ion-item *ngFor="let person of people;" button="true" (click)="openEditModal(person, $event)">
+    <ion-item
+      *ngFor="let person of people;"
+      button="true"
+      (click)="openEditModal(person, $event)"
+    >
       <ion-label>
         <h3>{{ person.name }}</h3>
         <p>
-          {{ ('Birthday' | translate )+ ': ' + (person.dateOfBirth | date : 'dd.
-          MM. YYYY') }}
+          {{ ('Birthday' | translate )+ ': ' + (person.dateOfBirth | date : 'dd. MM. YYYY') }}
         </p>
         <p *ngIf="person.ageAtResult !== undefined">
           <span *ngIf="person.ageAtResult < 0"
@@ -45,8 +38,15 @@
           >
         </p>
       </ion-label>
-      <ion-icon name="pencil" (click)="openEditModal(person, $event)"></ion-icon>
-      <ion-icon name="trash" class="ion-margin-horizontal" (click)="removeAPerson(person, $event)"></ion-icon>
+      <ion-icon
+        name="pencil"
+        (click)="openEditModal(person, $event)"
+      ></ion-icon>
+      <ion-icon
+        name="trash"
+        class="ion-margin-horizontal"
+        (click)="removeAPerson(person, $event)"
+      ></ion-icon>
     </ion-item>
   </ion-list>
   <ng-template #empty>
@@ -54,8 +54,9 @@
   ></ng-template>
 </ion-content>
 
-<ion-footer *ngIf="result" class="ion-no-margin ion-no-padding" >
+<ion-footer *ngIf="result" class="ion-no-margin ion-no-padding">
   <ion-item color="primary">
     {{('You will be x on the y'| translate:{date:(result | date : 'dd. MM. YYYY'), targetNrOfYears})}}
   </ion-item>
+  <ion-item (click)="openEditModal()" [button]="true">{{"Add someone"}} <ion-icon name="add"></ion-icon></ion-item>
 </ion-footer>
