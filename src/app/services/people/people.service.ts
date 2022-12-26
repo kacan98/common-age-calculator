@@ -119,9 +119,9 @@ export class PeopleService {
 
   setTargetYear(year: number) {
     if (year < 1) {
-      this.targetNrOfYears.next(0);
-      this.result.next(undefined);
-      return;
+      this.targetNrOfYears.next(50);
+      this.setTargetYear(50)
+      return
     }
     localStorage.setItem('targetNrOfYears', year.toString());
     this.targetNrOfYears.next(year);

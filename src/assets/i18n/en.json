@@ -1,4 +1,5 @@
 {
+  "Add more people to make this more interesting": "Add more people to make this more interesting!",
   "Add someone": "Add someone",
   "Add someones birthday": "Add someone's birthday",
   "April": "April",
@@ -30,15 +31,16 @@
   "The date was successfully re-calculated": "The date was successfully re-calculated",
   "These people were x on the y": "These people were x on the y",
   "They were not born yet": "They were not born yet",
+  "This day they were": "This day they were",
   "This day they will be": "This day they will be",
+  "This person abc will be xyz on the qrs": "{{name}} will be {{targetNrOfYears}} on the {{result}}.",
   "What day was this person born": "What day was this person born?",
   "What year was this person born": "What year was this person born?",
   "When are all these people going to be": "When are all these people going to be",
   "When are all these people going to be x years old": "When are all these people going to be {{years}} years old",
   "XYZ name successfully updated": "The birthday were successfully saved",
   "Year": "Year",
-  "This day they were": "This day they were",
-  "You will be x on the y": "You will be {{targetNrOfYears}} years old on the {{date}}.",
+  "You will be x on the y": "These people will be {{targetNrOfYears}} years old on the {{date}}.",
   "Your relatives/friends/colleagues name goes here": "Your relative's/friend's/colleague's name goes here",
   "years old?": "years old?"
 }

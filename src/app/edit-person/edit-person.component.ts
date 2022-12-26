@@ -44,7 +44,8 @@ export class EditPersonComponent implements OnInit {
     const yearOfBirth = new FormControl<number | null>(null, [
       Validators.required,
       Validators.min(1),
-      Validators.max(5000),
+      //https://stackoverflow.com/questions/11526504/minimum-and-maximum-date
+      Validators.max(271820),
     ]);
 
     combineLatest([

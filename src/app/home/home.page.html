@@ -1,16 +1,40 @@
-<ion-header [translucent]="true" *ngIf="!!people?.length">
-  <ion-toolbar>
+<ion-header [translucent]="true" *ngIf="people && people.length">
+  <ion-toolbar *ngIf="people.length>1">
     <div class="ion-margin year-selector-container">
-      <ion-button shape="round" fill="outline" class="minus" (click)="addToTargetYear(-50)">-</ion-button>
+      <ion-button
+        shape="round"
+        fill="outline"
+        class="minus"
+        (click)="addToTargetYear(-50)"
+        >-</ion-button
+      >
       <ion-text class="ion-padding-horizontal"
         >{{("When are all these people going to be x years old" | translate:
         {years:targetNrOfYears}) + "?" }}</ion-text
       >
-      <ion-button shape="round" class="plus" (click)="addToTargetYear(50)">+</ion-button>
+      <ion-button shape="round" class="plus" (click)="addToTargetYear(50)"
+        >+</ion-button
+      >
     </div>
   </ion-toolbar>
-  <ion-item color="light" *ngIf="result">
-    {{((resultIsBeforeToday ? 'These people were x on the y' :'You will be x on the y')| translate:{date:(result | date : 'dd. MM. YYYY'), targetNrOfYears})}}
+  <ion-item color="light" *ngIf="result && people">
+    <span *ngIf="people.length > 1; else justOne"
+      >{{((resultIsBeforeToday ? 'These people were x on the y' :'You will be x on the y')| translate:{date:(result | date : 'dd. MM. YYYY'),
+      targetNrOfYears})}}</span
+    >
+    <ng-template #justOne>
+      <ion-text class="ion-padding-vertical"
+        >{{"This person abc will be xyz on the qrs" | translate:{name:
+        people[0].name , result: (result | date:"dd. MM. YYYY"),
+        targetNrOfYears} }}
+        <div
+          class="addMorePeopleLink ion-padding-top"
+          (click)="openEditModal()"
+        >
+          {{'Add more people to make this more interesting'|translate}}
+        </div>
+      </ion-text>
+    </ng-template>
   </ion-item>
 </ion-header>
 
@@ -31,28 +55,34 @@
             >{{'They were not born yet'|translate}}</span
           >
           <span *ngIf="person.ageAtResult >= 0"
-            >{{ ((resultIsBeforeToday ? 'This day they were' :'This day they will be') | translate)+ ': ' +
-            (person.ageAtResult) }}</span
+            >{{ ((resultIsBeforeToday ? 'This day they were' :'This day they will be') | translate)+ ': ' + (person.ageAtResult) }}</span
           >
         </p>
       </ion-label>
-      <ion-button  fill="outline" (click)="openEditModal(person, $event)"><ion-icon
-        name="pencil"
-      ></ion-icon></ion-button>
-      <ion-button  fill="outline" (click)="removeAPerson(person, $event)"><ion-icon
-        name="trash"
-      ></ion-icon></ion-button>
+      <ion-button fill="outline" (click)="openEditModal(person, $event)"
+        ><ion-icon name="pencil"></ion-icon
+      ></ion-button>
+      <ion-button fill="outline" (click)="removeAPerson(person, $event)"
+        ><ion-icon name="trash"></ion-icon
+      ></ion-button>
     </ion-item>
+    <ion-button
+      style="text-align: center"
+      expand="full"
+      fill="clear"
+      (click)="openEditModal()"
+      ><ion-label>{{'Add someones birthday'|translate}}</ion-label
+      ><ion-icon name="add"></ion-icon
+    ></ion-button>
   </ion-list>
   <ng-template #empty>
-    <app-error-message [message]="message" [showLanguageSelector]="true"></app-error-message
+    <app-error-message
+      [message]="message"
+      [showLanguageSelector]="true"
+    ></app-error-message
   ></ng-template>
 </ion-content>
 
 <ion-footer *ngIf="result" class="ion-no-margin ion-no-padding">
-  <div class="bottom-panel">
-  <ion-button expand="full" fill="clear" (click)="openEditModal()" class="ion-margin"
-    >{{"Add someones birthday"|translate}} <ion-icon name="add"></ion-icon
-  ></ion-button>
-  <app-language-selector></app-language-selector></div>
+  <app-language-selector></app-language-selector>
 </ion-footer>
