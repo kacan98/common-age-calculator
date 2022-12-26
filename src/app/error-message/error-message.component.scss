@@ -35,6 +35,9 @@
   .language-selector {
     margin: auto;
     max-width: 150px;
+    ion-label{
+      font-size: x-small;
+    }
   }
 
   a {
