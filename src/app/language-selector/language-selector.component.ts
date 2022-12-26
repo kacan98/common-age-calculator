@@ -26,5 +26,8 @@ export class LanguageSelectorComponent implements OnInit {
         this.settingsService.switchLanguage(lang);
       }
     });
+  this.translateService.onLangChange.subscribe((lang)=>{
+    this.currentLang.setValue(lang.lang)
+  })
   }
 }

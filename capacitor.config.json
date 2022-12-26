@@ -1,6 +1,6 @@
 {
 	"appId": "io.ionic.starter",
-	"appName": "whenAreWeGonnaBe",
+	"appName": "Common Age Calculator",
 	"webDir": "www",
 	"bundledWebRuntime": false
 }

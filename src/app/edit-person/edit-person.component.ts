@@ -51,7 +51,6 @@ export class EditPersonComponent implements OnInit {
       yearOfBirth.valueChanges,
       monthOfBirth.valueChanges,
     ]).subscribe(([selectedYear, selectedMonth]) => {
-      console.log(selectedYear, selectedMonth);
       if (!selectedMonth || !selectedYear) {
         this.dayOptions = this.createAnArrayFromNrOfDays(31);
       } else {
@@ -60,7 +59,6 @@ export class EditPersonComponent implements OnInit {
         this.dayOptions = this.createAnArrayFromNrOfDays(
           getDaysInAMonth(selectedYear, selectedMonth)
         );
-        console.log(this.dayOptions);
       }
     });
 
