@@ -13,7 +13,9 @@ export class LanguageSelectorComponent implements OnInit {
     { name: 'Čeština', fileName: 'cz', flag: '🇨🇿' },
     { name: 'English', fileName: 'en', flag: '🇬🇧' },
   ];
-  currentLang = new FormControl(this.translateService.defaultLang);
+  currentLang = new FormControl(
+    this.translateService.currentLang || this.translateService.defaultLang
+  );
 
   constructor(
     private settingsService: SettingsService,
@@ -26,8 +28,8 @@ export class LanguageSelectorComponent implements OnInit {
         this.settingsService.switchLanguage(lang);
       }
     });
-  this.translateService.onLangChange.subscribe((lang)=>{
-    this.currentLang.setValue(lang.lang)
-  })
+    this.translateService.onLangChange.subscribe((lang) => {
+      this.currentLang.setValue(lang.lang);
+    });
   }
 }
