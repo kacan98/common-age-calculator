@@ -1,0 +1,25 @@
+
+.header-container{
+  transition: 2s;
+  position: relative;
+  .open-button-container{
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 50;
+    ion-button {
+      position: relative;
+      z-index: 11;
+      pointer-events: all;
+
+      &.editing-open{
+        top:0
+      }
+      &.editing-closed{
+        transform: translate(0px, -15px);
+      }
+    }
+  }
+}
+
+

@@ -1,7 +1,7 @@
-<div style="position: relative">
-  <ion-header [translucent]="true" *ngIf="!!people?.length || addingVisible">
+<div class="header-container" *ngIf="!!people?.length || addingVisible">
+  <ion-header [translucent]="true" >
     <ion-toolbar>
-      <div class="ion-margin" *ngIf="!!people?.length">
+      <div class="ion-margin">
         {{"When are all these people going to be" | translate}}
         <ion-input
           color="secondary"
@@ -18,15 +18,9 @@
     </ion-toolbar>
   </ion-header>
   <div
-    style="
-      display: flex;
-      justify-content: center;
-      position: absolute;
-      left: 45%;
-      z-index: 2;
-    "
+    class="open-button-container"
   >
-    <ion-button color="light" (click)="toggleVisibility()"
+    <ion-button [class]="addingVisible ? 'editing-open':'editing-closed'" color="light" mode="md" (click)="toggleVisibility()"
       ><ion-icon [name]="addingVisible ? 'arrow-up' : 'add'"></ion-icon
     ></ion-button>
   </div>
@@ -34,7 +28,7 @@
 
 <ion-content>
   <ion-list *ngIf="people?.length; else empty">
-    <ion-item *ngFor="let person of people;" (click)="openEditModal(person, $event)">
+    <ion-item *ngFor="let person of people;" button="true" (click)="openEditModal(person, $event)">
       <ion-label>
         <h3>{{ person.name }}</h3>
         <p>

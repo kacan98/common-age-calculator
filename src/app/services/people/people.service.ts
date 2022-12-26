@@ -6,6 +6,8 @@ import {
   map,
   Observable,
 } from 'rxjs';
+import {ToastController} from "@ionic/angular";
+import {TranslateService} from "@ngx-translate/core";
 
 @Injectable({
   providedIn: 'root',
@@ -14,11 +16,12 @@ export class PeopleService {
   private people = new BehaviorSubject<Person[]>([]);
   private result = new BehaviorSubject<Date | undefined>(undefined);
   private targetNrOfYears = new BehaviorSubject<number>(100);
+  private toasts:HTMLIonToastElement[] = []
 
-  constructor() {
+  constructor(private toastController:ToastController, private translateService:TranslateService) {
     this.people.next(JSON.parse(localStorage.getItem('people') || '[]'))
     this.targetNrOfYears.next(JSON.parse(localStorage.getItem('targetNrOfYears') || '100'))
-    this.adjustResult();
+    this.startResultAdjusting();
   }
 
   getPeopleListener(): Observable<Person[] | undefined> {
@@ -57,14 +60,34 @@ export class PeopleService {
     }
   }
 
-  editAPerson(oldPerson: Person, updatedPerson: Person) {
+  async editAPerson(oldPerson: Person, updatedPerson: Person) {
     const people = this.people.getValue();
     if (people) {
       const newPeople = people.filter((p) => p._id !== oldPerson._id);
       newPeople.push(updatedPerson);
       localStorage.setItem('people', JSON.stringify(newPeople));
       this.people.next(newPeople);
+      await this.showAToast('XYZ name successfully updated', {name: updatedPerson.name})
     }
+  }
+
+  private dismissAllToasts(){
+    this.toasts.forEach((t)=>t.dismiss())
+  }
+
+  private async showAToast(message:string, params?:{[key:string]:any}){
+    this.dismissAllToasts()
+    this.translateService.get(message,{params}).subscribe(async(translatedMessage)=>{
+      const toast = await this.toastController.create({
+        message: translatedMessage,
+        duration: 2000,
+        position: 'bottom',
+        cssClass: 'toast-bottom',
+        color:'success',
+      });
+      this.toasts.push(toast)
+      await toast.present();
+    })
   }
 
   removeAPerson(person: Person) {
@@ -85,13 +108,14 @@ export class PeopleService {
     this.targetNrOfYears.next(year);
   }
 
-  private adjustResult() {
+  private startResultAdjusting() {
     combineLatest([
       this.getTargetNrOfYearListener(),
       this.getPeopleListener(),
-    ]).subscribe(([targetNrOfYears, people]) => {
+    ]).subscribe(async ([targetNrOfYears, people]) => {
       if (targetNrOfYears < 1 || !people || !people.length) {
         this.result.next(undefined);
+        this.dismissAllToasts()
         return;
       }
       //sort mutates the original array
@@ -152,6 +176,7 @@ export class PeopleService {
           );
           theDay.setHours(0, 0, 0, 0);
           theDay.setFullYear(currentYear);
+          await this.showAToast('The date was successfully re-calculated',)
           this.result.next(theDay);
         }
       }

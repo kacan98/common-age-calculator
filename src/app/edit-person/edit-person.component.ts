@@ -68,7 +68,7 @@ export class EditPersonComponent implements OnInit {
       this.form.getRawValue();
     const dateOfBirth = new Date();
     dateOfBirth.setDate(dayOfBirth);
-    dateOfBirth.setMonth(monthOfBirth - 1);
+    dateOfBirth.setMonth(monthOfBirth);
     dateOfBirth.setFullYear(yearOfBirth);
     if (this.person) {
       await this.editAPerson(this.person, {
@@ -85,20 +85,9 @@ export class EditPersonComponent implements OnInit {
     }}
 
   private async editAPerson(oldVersion: Person, editedVersion: Person) {
-    this.peopleService.editAPerson(oldVersion, editedVersion);
+    await this.peopleService.editAPerson(oldVersion, editedVersion);
     await this.modalController.dismiss(undefined, 'submit');
     this.form.reset()
-  }
-
-  findInvalidControls() {
-    const invalid = [];
-    const controls = this.form.controls;
-    for (const name in controls) {
-      if (controls[name].invalid) {
-        invalid.push(name);
-      }
-    }
-    return invalid;
   }
 
   cancel() {
