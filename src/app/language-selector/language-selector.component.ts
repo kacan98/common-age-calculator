@@ -19,7 +19,7 @@ export class LanguageSelectorComponent implements OnInit {
 
   constructor(
     private settingsService: SettingsService,
-    private translateService: TranslateService
+    private translateService: TranslateService,
   ) {}
 
   ngOnInit() {

@@ -30,5 +30,9 @@ export class TimeAgoExtendsPipe extends TimeAgoPipe {}
   declarations: [HomePage, PeopleComponent, TimeAgoExtendsPipe, EditPersonComponent, ErrorMessageComponent, LanguageSelectorComponent],
   providers: [TimeAgoPipe],
 
+  exports: [
+    ErrorMessageComponent,
+    LanguageSelectorComponent
+  ]
 })
 export class HomePageModule {}
