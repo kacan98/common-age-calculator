@@ -5,16 +5,7 @@
     class="header-icon"
     color="primary"
   ></ion-icon>
-  <div class="language-selector">
-    <ion-label >{{ "Select language:" | translate }}</ion-label>
-    <ion-select class="ion-padding" [formControl]="currentLang">
-      <ion-select-option
-        [value]="lang.fileName"
-        *ngFor="let lang of languages"
-        >{{ lang.name }}</ion-select-option
-      ></ion-select
-    >
-  </div>
+<app-language-selector *ngIf="showLanguageSelector"></app-language-selector>
   <ion-text color="dark">
     <strong>{{ message.header | translate }}</strong>
   </ion-text>
@@ -27,6 +18,7 @@
       fill="clear"
       color="primary"
       strong="true"
+      shape="round"
       [title]="button.actionText | translate"
       (click)="button.callback()"
     >

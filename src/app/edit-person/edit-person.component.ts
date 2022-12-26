@@ -1,8 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { PeopleService } from '../services/people/people.service';
+import {
+  getDaysInAMonth,
+  PeopleService,
+} from '../services/people/people.service';
 import { Person } from '../services/people/people.modet';
 import { ModalController } from '@ionic/angular';
+import {combineLatest} from 'rxjs';
 
 @Component({
   selector: 'app-edit-person',
@@ -26,11 +30,40 @@ export class EditPersonComponent implements OnInit {
     'November',
     'December',
   ];
+  dayOptions = this.createAnArrayFromNrOfDays(31);
 
   constructor(
     private peopleService: PeopleService,
     private modalController: ModalController
   ) {
+    const monthOfBirth = new FormControl<number | null>(null, [
+      Validators.required,
+      Validators.min(0),
+      Validators.max(11),
+    ]);
+    const yearOfBirth = new FormControl<number | null>(null, [
+      Validators.required,
+      Validators.min(1),
+      Validators.max(5000),
+    ]);
+
+    combineLatest([
+      yearOfBirth.valueChanges,
+      monthOfBirth.valueChanges,
+    ]).subscribe(([selectedYear, selectedMonth]) => {
+      console.log(selectedYear, selectedMonth);
+      if (!selectedMonth || !selectedYear) {
+        this.dayOptions = this.createAnArrayFromNrOfDays(31);
+      } else {
+        const dayOfBirth = this.form.controls['dayOfBirth'];
+        if (dayOfBirth.value > 28) dayOfBirth.setValue(null);
+        this.dayOptions = this.createAnArrayFromNrOfDays(
+          getDaysInAMonth(selectedYear, selectedMonth)
+        );
+        console.log(this.dayOptions);
+      }
+    });
+
     this.form = new FormGroup({
       name: new FormControl<string>('', Validators.required),
       dayOfBirth: new FormControl(undefined, [
@@ -38,16 +71,8 @@ export class EditPersonComponent implements OnInit {
         Validators.min(1),
         Validators.max(31),
       ]),
-      monthOfBirth: new FormControl(undefined, [
-        Validators.required,
-        Validators.min(1),
-        Validators.max(11),
-      ]),
-      yearOfBirth: new FormControl(undefined, [
-        Validators.required,
-        Validators.min(1),
-        Validators.max(5000),
-      ]),
+      monthOfBirth,
+      yearOfBirth,
     });
   }
 
@@ -82,16 +107,21 @@ export class EditPersonComponent implements OnInit {
         name,
         dateOfBirth,
       });
-      this.form.reset()
-    }}
+      this.form.reset();
+    }
+  }
 
   private async editAPerson(oldVersion: Person, editedVersion: Person) {
     await this.peopleService.editAPerson(oldVersion, editedVersion);
     await this.modalController.dismiss(undefined, 'submit');
-    this.form.reset()
+    this.form.reset();
   }
 
   cancel() {
-    this.modalController.dismiss(undefined,'cancel')
+    this.modalController.dismiss(undefined, 'cancel');
+  }
+
+  private createAnArrayFromNrOfDays(days: number) {
+    return Array.from({ length: days }).map((i, index) => index + 1);
   }
 }

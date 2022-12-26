@@ -6,7 +6,9 @@
     </ion-item>
     <ion-item>
       <ion-label position="stacked">{{'Day'|translate}}</ion-label>
-      <ion-input formControlName="dayOfBirth" type="number" max="31" [placeholder]="'What day was this person born'|translate"></ion-input>
+      <ion-select [placeholder]="'What day was this person born'|translate" formControlName="dayOfBirth">
+        <ion-select-option [value]="day" *ngFor="let day of dayOptions">{{day}}</ion-select-option>
+      </ion-select>
     </ion-item>
     <ion-item>
       <ion-label position="stacked">{{'Month'|translate}}</ion-label>
@@ -20,18 +22,20 @@
     </ion-item>
     <ion-button
       (click)="savePerson()"
-      expand="block"
+      expand="full"
+      shape="round"
       class="ion-margin-horizontal"
       [disabled]="form.invalid"
-    >{{(this.person ? 'Save': 'Add someone new')|translate}}</ion-button
+    >{{(this.person ? 'Save': 'Add someones birthday')|translate}}</ion-button
     >
     <ion-button
       *ngIf="this.person"
       (click)="cancel()"
-      expand="block"
+      expand="full"
       class="ion-margin-horizontal ion-margin-top"
       color="danger"
       fill="outline"
+      shape="round"
     >{{'Cancel'|translate}}</ion-button
     >
   </form>

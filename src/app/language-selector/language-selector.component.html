@@ -1,0 +1,9 @@
+<div class="language-selector">
+  <ion-select class="ion-padding" [formControl]="currentLang">
+    <ion-select-option
+      [value]="lang.fileName"
+      *ngFor="let lang of languages"
+    >{{ lang.name }}</ion-select-option
+    ></ion-select
+  >
+</div>

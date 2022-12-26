@@ -2,7 +2,11 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { EditPersonComponent } from '../edit-person/edit-person.component';
 import { Person } from '../services/people/people.modet';
-import {getAge, PeopleService} from '../services/people/people.service';
+import {
+  getAge,
+  isBeforeToday,
+  PeopleService,
+} from '../services/people/people.service';
 import { Subscription, combineLatest } from 'rxjs';
 import { ErrorMessage } from '../error-message/error-message.component';
 
@@ -15,15 +19,16 @@ export class HomePage implements OnInit, OnDestroy {
   people?: Person[];
   result?: Date;
   targetNrOfYears = 100;
+  resultIsBeforeToday?: boolean;
   message: ErrorMessage = {
     text: 'Intro',
     header: 'Common birthday calculator',
     actions: [
       {
         callback: async () => {
-          await this.openEditModal()
+          await this.openEditModal();
         },
-        actionText: 'Add someone new',
+        actionText: 'Add someones birthday',
       },
     ],
   };
@@ -47,19 +52,20 @@ export class HomePage implements OnInit, OnDestroy {
       ]).subscribe(([result, targetYears, people]) => {
         this.result = result;
         this.targetNrOfYears = targetYears;
-        this.people = people?.map((person)=>{
-          if(result){
-            person.ageAtResult = getAge(person.dateOfBirth, result)
+        this.people = people?.map((person) => {
+          if (result) {
+            this.resultIsBeforeToday = isBeforeToday(result);
+            person.ageAtResult = getAge(person.dateOfBirth, result);
           }
-          return person
-        })
+          return person;
+        });
       })
     );
   }
 
   async openEditModal(person?: Person, event?: Event) {
-    if(event){
-    event.stopPropagation();
+    if (event) {
+      event.stopPropagation();
     }
 
     const modal = await this.modalController.create({
@@ -79,7 +85,7 @@ export class HomePage implements OnInit, OnDestroy {
     this.peopleService.removeAPerson(person);
   }
 
-  setYear(year: number) {
-    this.peopleService.setTargetYear(year);
+  addToTargetYear(yearsToAdd: number) {
+    this.peopleService.setTargetYear(this.targetNrOfYears + yearsToAdd);
   }
 }

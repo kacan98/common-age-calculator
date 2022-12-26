@@ -1,7 +1,4 @@
 import { Component, Input } from '@angular/core'
-import {SettingsService} from "../services/settings/settings.service";
-import {TranslateService} from "@ngx-translate/core";
-import {FormControl} from "@angular/forms";
 
 export interface ErrorMessage {
   headerIconName?: string
@@ -23,18 +20,7 @@ export interface ErrorMessage {
 })
 export class ErrorMessageComponent {
   @Input() message?: ErrorMessage
-  languages = [{name:"Čeština" ,fileName:'cz', flag:"🇨🇿"}, {name:"English" ,fileName:'en',flag:"🇬🇧"}];
-  currentLang = new FormControl(this.translateService.defaultLang)
+  @Input() showLanguageSelector = false
 
-  constructor(private settingsService: SettingsService, private translateService:TranslateService) {
-    this.currentLang.valueChanges.subscribe((c)=>{
-      if(c){
-      this.changeLanguage(c)
-      }
-    })
-  }
-
-  changeLanguage(lang:string) {
-    this.settingsService.switchLanguage(lang)
-  }
+  constructor() {}
 }

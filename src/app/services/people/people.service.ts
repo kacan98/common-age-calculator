@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Person } from './people.modet';
 import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
-import { ToastController } from '@ionic/angular';
+import {ModalController, ToastController} from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
@@ -15,7 +15,8 @@ export class PeopleService {
 
   constructor(
     private toastController: ToastController,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private modalController: ModalController
   ) {
     this.people.next(JSON.parse(localStorage.getItem('people') || '[]'));
     this.targetNrOfYears.next(
@@ -36,7 +37,7 @@ export class PeopleService {
         return p.sort(
           (p1, p2) => p1.dateOfBirth.getTime() - p2.dateOfBirth.getTime()
         );
-      }),
+      })
     );
   }
 
@@ -56,9 +57,10 @@ export class PeopleService {
         newPeople.push(person);
         localStorage.setItem('people', JSON.stringify(newPeople));
         this.people.next(newPeople);
+        this.modalController.dismiss()
         await this.showAToast(
           'The person was successfully added',
-          false,
+          true,
           'bottom'
         );
       }
@@ -85,7 +87,7 @@ export class PeopleService {
   private async showAToast(
     message: string,
     pushPosition = true,
-    position: 'top' | 'bottom',
+    position: 'top' | 'bottom' | 'middle',
     params?: { [key: string]: any }
   ) {
     this.dismissAllToasts();
@@ -97,7 +99,7 @@ export class PeopleService {
         const toast = await this.toastController.create({
           message: translatedMessage,
           duration: 2000,
-          position: 'top',
+          position: position,
           cssClass: pushPosition ? cssClass : '',
           color: 'success',
         });
@@ -117,6 +119,7 @@ export class PeopleService {
 
   setTargetYear(year: number) {
     if (year < 1) {
+      this.targetNrOfYears.next(0);
       this.result.next(undefined);
       return;
     }
@@ -192,13 +195,6 @@ export class PeopleService {
           );
           theDay.setHours(0, 0, 0, 0);
           theDay.setFullYear(currentYear);
-          // TODO:Maybe move the toast up?
-          await this.showAToast(
-            'The date was successfully re-calculated',
-            true,
-            'top',
-            {}
-          );
           this.result.next(theDay);
         }
       }
@@ -224,4 +220,16 @@ export const getAge = (birthday: Date, today: Date) => {
     age--;
   }
   return age;
+};
+
+export const getDaysInAMonth = (year: number, month: number) => {
+  return new Date(year, month + 1, 0).getDate();
+};
+
+export const isBeforeToday = (date: Date) => {
+  const today = new Date();
+
+  today.setHours(0, 0, 0, 0);
+
+  return date.getTime() < today.getTime();
 };

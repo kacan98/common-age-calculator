@@ -10,6 +10,7 @@ import {TimeAgoPipe} from "time-ago-pipe";
 import {TranslateModule} from "@ngx-translate/core";
 import {EditPersonComponent} from "../edit-person/edit-person.component";
 import {ErrorMessageComponent} from "../error-message/error-message.component";
+import {LanguageSelectorComponent} from "../language-selector/language-selector.component";
 
 @Pipe({
   name: 'timeAgo',
@@ -26,7 +27,7 @@ export class TimeAgoExtendsPipe extends TimeAgoPipe {}
     ReactiveFormsModule,
     TranslateModule,
   ],
-  declarations: [HomePage, PeopleComponent, TimeAgoExtendsPipe, EditPersonComponent, ErrorMessageComponent],
+  declarations: [HomePage, PeopleComponent, TimeAgoExtendsPipe, EditPersonComponent, ErrorMessageComponent, LanguageSelectorComponent],
   providers: [TimeAgoPipe],
 
 })
