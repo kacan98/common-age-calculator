@@ -1,18 +1,42 @@
-.year-selector-container{
+ion-text {
   display: flex;
-  justify-content: space-between;
+  align-items: center;
+}
 
-  ion-text{
+.addMorePeopleLink {
+  color: var(--ion-color-light);
+  text-decoration: underline;
+}
+
+.header-middle-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  .target-selector {
     display: flex;
-    align-items: center;
+    flex-direction: row;
+  }
+
+  .nrOfYears {
+    font-size: xx-large;
   }
 }
 
-.addMorePeopleLink{
-  color:var(--ion-color-primary);
+.result-content {
+  width: 100%;
+  text-align: center;
+  font-size: large;
 }
 
-.bottom-panel{
+.just-one-person-result {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.bottom-panel {
   display: flex;
   justify-content: space-between;
   align-items: center;
