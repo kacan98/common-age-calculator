@@ -4,6 +4,7 @@
       <div class="ion-margin" *ngIf="!!people?.length">
         {{"When are all these people going to be" | translate}}
         <ion-input
+          color="secondary"
           step="100"
           style="max-width: 70px; display: inline-block"
           type="number"
@@ -33,12 +34,12 @@
 
 <ion-content>
   <ion-list *ngIf="people?.length; else empty">
-    <ion-item *ngFor="let person of people;" (click)="openEditModal(person)">
+    <ion-item *ngFor="let person of people;" (click)="openEditModal(person, $event)">
       <ion-label>
         <h3>{{ person.name }}</h3>
         <p>
-          {{ ('Birthday' | translate )+ ': ' + (person.dateOfBirth | date :
-          'dd. MM. YYYY') }}
+          {{ ('Birthday' | translate )+ ': ' + (person.dateOfBirth | date : 'dd.
+          MM. YYYY') }}
         </p>
         <p *ngIf="person.ageAtResult !== undefined">
           <span *ngIf="person.ageAtResult < 0"
@@ -50,7 +51,8 @@
           >
         </p>
       </ion-label>
-      <ion-icon name="trash" (click)="removeAPerson(person)"></ion-icon>
+      <ion-icon name="pencil" (click)="openEditModal(person, $event)"></ion-icon>
+      <ion-icon name="trash" class="ion-margin-horizontal" (click)="removeAPerson(person, $event)"></ion-icon>
     </ion-item>
   </ion-list>
   <ng-template #empty>
@@ -58,8 +60,8 @@
   ></ng-template>
 </ion-content>
 
-<ion-footer class="ion-padding" *ngIf="result">
-  <div>
-    {{('The answer is'| translate)}} {{ result | date : 'dd. MM. YYYY' }}
-  </div>
+<ion-footer *ngIf="result" class="ion-no-margin ion-no-padding" >
+  <ion-item color="primary">
+    {{('You will be x on the y'| translate:{date:(result | date : 'dd. MM. YYYY'), targetNrOfYears})}}
+  </ion-item>
 </ion-footer>

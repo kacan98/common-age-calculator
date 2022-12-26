@@ -1,23 +1,22 @@
 <ion-list>
   <form [formGroup]="form">
     <ion-item>
-      <ion-label position="floating">{{'Name'|translate}}</ion-label>
-      <ion-input formControlName="name" placeholder="Enter text"></ion-input>
-    </ion-item>
-    <ion-list-header>{{'Day of birth'|translate}}</ion-list-header>
-    <ion-item>
-      <ion-label position="floating">{{'Day'|translate}}</ion-label>
-      <ion-input formControlName="dayOfBirth" type="number" max="31"></ion-input>
+      <ion-label position="stacked">{{'Name'|translate}}</ion-label>
+      <ion-input formControlName="name" [placeholder]='"Your relatives/friends/colleagues name goes here"| translate'></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label position="floating">{{'Month'|translate}}</ion-label>
-      <ion-select formControlName="monthOfBirth">
+      <ion-label position="stacked">{{'Day'|translate}}</ion-label>
+      <ion-input formControlName="dayOfBirth" type="number" max="31" [placeholder]="'What day was this person born'|translate"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">{{'Month'|translate}}</ion-label>
+      <ion-select [placeholder]="'What month was this person born'|translate" formControlName="monthOfBirth">
         <ion-select-option [value]="i" *ngFor="let month of months; let i = index">{{month|translate}}</ion-select-option>
       </ion-select>
     </ion-item>
     <ion-item>
-      <ion-label position="floating">{{'Year'|translate}}</ion-label>
-      <ion-input min="0" [max]="5000" type="number" formControlName="yearOfBirth"></ion-input>
+      <ion-label position="stacked">{{'Year'|translate}}</ion-label>
+      <ion-input min="0" [max]="5000" type="number" formControlName="yearOfBirth" [placeholder]="'What year was this person born'|translate"></ion-input>
     </ion-item>
     <ion-button
       (click)="savePerson()"

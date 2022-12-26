@@ -33,23 +33,22 @@ export class EditPersonComponent implements OnInit {
   ) {
     this.form = new FormGroup({
       name: new FormControl<string>('', Validators.required),
-      dayOfBirth: new FormControl<number>(0, [
+      dayOfBirth: new FormControl(undefined, [
         Validators.required,
         Validators.min(1),
         Validators.max(31),
       ]),
-      monthOfBirth: new FormControl<number>(0, [
+      monthOfBirth: new FormControl(undefined, [
         Validators.required,
         Validators.min(1),
         Validators.max(11),
       ]),
-      yearOfBirth: new FormControl<number>(0, [
+      yearOfBirth: new FormControl(undefined, [
         Validators.required,
         Validators.min(1),
         Validators.max(5000),
       ]),
     });
-    this.resetFormToToday();
   }
 
   ngOnInit() {
@@ -83,13 +82,12 @@ export class EditPersonComponent implements OnInit {
         name,
         dateOfBirth,
       });
-    }
-    this.resetFormToToday();
-  }
+    }}
 
   private async editAPerson(oldVersion: Person, editedVersion: Person) {
     this.peopleService.editAPerson(oldVersion, editedVersion);
     await this.modalController.dismiss(undefined, 'submit');
+    this.form.reset()
   }
 
   findInvalidControls() {
@@ -101,17 +99,6 @@ export class EditPersonComponent implements OnInit {
       }
     }
     return invalid;
-  }
-
-  private resetFormToToday() {
-    const today = new Date();
-    this.form.setValue({
-      ...this.form.getRawValue(),
-      name: '',
-      dayOfBirth: today.getDate(),
-      monthOfBirth: today.getMonth(),
-      yearOfBirth: today.getFullYear(),
-    });
   }
 
   cancel() {

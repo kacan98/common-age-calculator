@@ -3,8 +3,8 @@ import { ModalController } from '@ionic/angular';
 import { EditPersonComponent } from '../edit-person/edit-person.component';
 import { Person } from '../services/people/people.modet';
 import { PeopleService } from '../services/people/people.service';
-import { Subscription,  combineLatest} from 'rxjs';
-import {ErrorMessage} from "../error-message/error-message.component";
+import { Subscription, combineLatest } from 'rxjs';
+import { ErrorMessage } from '../error-message/error-message.component';
 
 @Component({
   selector: 'app-home',
@@ -16,7 +16,11 @@ export class HomePage implements OnInit, OnDestroy {
   result?: Date;
   targetNrOfYears = 100;
   addingVisible = false;
-  message:ErrorMessage = {text:'Start by adding clicking above', header:'No birthdays yet'}
+  message: ErrorMessage = {
+    text: 'Intro',
+    header: 'Common birthday calculator',
+    actions: [{ callback: () => {this.addingVisible = true}, actionText:'Add someone new' }],
+  };
   private subscriptions: Subscription[] = [];
 
   constructor(
@@ -33,7 +37,7 @@ export class HomePage implements OnInit, OnDestroy {
       combineLatest([
         this.peopleService.getResultListener(),
         this.peopleService.getTargetNrOfYearListener(),
-        this.peopleService.getPeopleListener()
+        this.peopleService.getPeopleListener(),
       ]).subscribe(([result, targetYears, people]) => {
         this.result = result;
         this.targetNrOfYears = targetYears;
@@ -46,16 +50,18 @@ export class HomePage implements OnInit, OnDestroy {
     this.addingVisible = !this.addingVisible;
   }
 
-  async openEditModal(person: Person) {
+  async openEditModal(person: Person, event:Event) {
+    event.stopPropagation()
     const modal = await this.modalController.create({
       component: EditPersonComponent,
       componentProps: { person },
     });
 
-    await modal.present()
+    await modal.present();
   }
 
-  removeAPerson(person: Person) {
+  removeAPerson(person: Person, event:Event) {
+    event.stopPropagation()
     this.peopleService.removeAPerson(person);
   }
 

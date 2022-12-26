@@ -5,22 +5,21 @@
     class="header-icon"
     color="primary"
   ></ion-icon>
+  <div class="language-selector">
+    <ion-select class="ion-padding" [formControl]="currentLang">
+      <ion-select-option
+        [value]="lang.fileName"
+        *ngFor="let lang of languages"
+        >{{ lang.name }}</ion-select-option
+      ></ion-select
+    >
+  </div>
   <ion-text color="dark">
     <strong>{{ message.header | translate }}</strong>
   </ion-text>
   <p class="ion-padding">
     {{ message.text | translate }}
   </p>
-  <p class="ion-padding">
-    {{ "You can also choose a different language" | translate }}
-  </p>
-  <div class="language-selector">
-    <ion-select class="ion-padding" [formControl]="currentLang">
-      <ion-select-option [value]="lang.fileName" *ngFor="let lang of languages">{{
-        lang.name
-      }}</ion-select-option></ion-select
-    >
-  </div>
   <ion-buttons *ngIf="message.actions">
     <ion-button
       *ngFor="let button of message.actions"

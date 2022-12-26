@@ -9,6 +9,7 @@ export class SettingsService {
   constructor(private translateService:TranslateService) { }
 
   switchLanguage(lang:string){
+    localStorage.setItem('language', lang)
     this.translateService.use(lang)
   }
 }
