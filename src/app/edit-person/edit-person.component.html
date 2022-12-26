@@ -1,24 +1,51 @@
 <ion-list>
   <form [formGroup]="form">
     <ion-item>
-      <ion-label position="stacked">{{'Name'|translate}}</ion-label>
-      <ion-input formControlName="name" [placeholder]='"Your relatives/friends/colleagues name goes here"| translate'></ion-input>
+      <ion-label position="stacked">{{ "Name" | translate }}</ion-label>
+      <ion-input
+        formControlName="name"
+        autocorrect="off"
+        autocomplete="name"
+        autocapitalize="on"
+        [placeholder]="
+          'Your relatives/friends/colleagues name goes here' | translate
+        "
+      ></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label position="stacked">{{'Day'|translate}}</ion-label>
-      <ion-select [placeholder]="'What day was this person born'|translate" formControlName="dayOfBirth">
-        <ion-select-option [value]="day" *ngFor="let day of dayOptions">{{day}}</ion-select-option>
+      <ion-label position="stacked">{{ "Day" | translate }}</ion-label>
+      <ion-select
+        [placeholder]="'What day was this person born' | translate"
+        formControlName="dayOfBirth"
+      >
+        <ion-select-option [value]="day" *ngFor="let day of dayOptions">{{
+          day
+        }}</ion-select-option>
       </ion-select>
     </ion-item>
     <ion-item>
-      <ion-label position="stacked">{{'Month'|translate}}</ion-label>
-      <ion-select [placeholder]="'What month was this person born'|translate" formControlName="monthOfBirth">
-        <ion-select-option [value]="i" *ngFor="let month of months; let i = index">{{month|translate}}</ion-select-option>
+      <ion-label position="stacked">{{ "Month" | translate }}</ion-label>
+      <ion-select
+        [placeholder]="'What month was this person born' | translate"
+        formControlName="monthOfBirth"
+      >
+        <ion-select-option
+          [value]="i"
+          *ngFor="let month of months; let i = index"
+          >{{ month | translate }}</ion-select-option
+        >
       </ion-select>
     </ion-item>
     <ion-item>
-      <ion-label position="stacked">{{'Year'|translate}}</ion-label>
-      <ion-input min="0" [max]="5000" type="number" formControlName="yearOfBirth" [placeholder]="'What year was this person born'|translate"></ion-input>
+      <ion-label position="stacked">{{ "Year" | translate }}</ion-label>
+      <ion-input
+        autocomplete="bday-year"
+        min="0"
+        [max]="5000"
+        type="number"
+        formControlName="yearOfBirth"
+        [placeholder]="'What year was this person born' | translate"
+      ></ion-input>
     </ion-item>
     <ion-button
       (click)="savePerson()"
@@ -26,7 +53,9 @@
       shape="round"
       class="ion-margin-horizontal"
       [disabled]="form.invalid"
-    >{{(this.person ? 'Save': 'Add someones birthday')|translate}}</ion-button
+      >{{
+        (this.person ? "Save" : "Add someones birthday") | translate
+      }}</ion-button
     >
     <ion-button
       *ngIf="this.person"
@@ -36,7 +65,7 @@
       color="danger"
       fill="outline"
       shape="round"
-    >{{'Cancel'|translate}}</ion-button
+      >{{ "Cancel" | translate }}</ion-button
     >
   </form>
 </ion-list>
