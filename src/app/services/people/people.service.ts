@@ -93,7 +93,7 @@ export class PeopleService {
   removeAPerson(person: Person) {
     const people = this.people.getValue();
     if (people) {
-      const newPeople = people.filter((p) => p.name !== person.name);
+      const newPeople = people.filter((p) => p._id !== person._id);
       localStorage.setItem('people', JSON.stringify(newPeople));
       this.people.next(newPeople);
     }

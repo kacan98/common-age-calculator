@@ -78,7 +78,7 @@ export class EditPersonComponent implements OnInit {
       });
     } else {
       this.peopleService.addAPerson({
-        _id: Math.random() * 1000000,
+        _id: Math.round(Math.random() * 58976421341312),
         name,
         dateOfBirth,
       });
