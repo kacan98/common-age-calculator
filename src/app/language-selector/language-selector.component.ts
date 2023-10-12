@@ -9,10 +9,14 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./language-selector.component.scss'],
 })
 export class LanguageSelectorComponent implements OnInit {
-  languages = [
+  static readonly languages = [
     { name: 'Čeština', fileName: 'cz', flag: '🇨🇿' },
     { name: 'English', fileName: 'en', flag: '🇬🇧' },
+    { name: 'Dansk', fileName: 'dk', flag: '🇩🇰' },
+    { name: 'Svenska', fileName: 'sv', flag: '🇸🇪' },
+    { name: 'Deutsch', fileName: 'de', flag: '🇩🇪' }
   ];
+  languages = LanguageSelectorComponent.languages;
   currentLang = new FormControl(
     this.translateService.currentLang || this.translateService.defaultLang
   );

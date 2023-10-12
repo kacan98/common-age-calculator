@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import {TranslateService} from "@ngx-translate/core";
+import { LanguageSelectorComponent } from './language-selector/language-selector.component';
 
 @Component({
   selector: 'app-root',
@@ -8,15 +9,11 @@ import {TranslateService} from "@ngx-translate/core";
 })
 export class AppComponent {
   constructor(private translateService: TranslateService) {
-    let browserLanguage:string| undefined = navigator.language
+    let browserLanguage:string| undefined = navigator.language.slice(0, 2)
     if(browserLanguage === 'cs') {
       browserLanguage = 'cz'
-    } else if(browserLanguage.startsWith('en')) {
-      browserLanguage = 'en'
-    } else {
-      browserLanguage = undefined
-    }
-    translateService.addLangs(['cz','en'])
+    } 
+    translateService.addLangs(LanguageSelectorComponent.languages.map(language => language.fileName))
     translateService.setDefaultLang(localStorage.getItem('language') || browserLanguage || 'en')
   }
 }

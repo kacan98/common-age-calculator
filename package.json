@@ -9,7 +9,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "ng lint",
-    "addToGithubPages": "ionic build --prod -- --base-href https://KarelCan.github.io/common-age-calculator/ && npx angular-cli-ghpages --dir=www"
+    "addToGithubPages": "ionic build --prod -- --base-href https://kacan98.github.io/common-age-calculator/ && npx angular-cli-ghpages --dir=www"
   },
   "private": true,
   "dependencies": {
