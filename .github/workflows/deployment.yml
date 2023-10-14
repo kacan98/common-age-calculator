@@ -18,10 +18,11 @@ jobs:
       with:
         node-version: '16'
       
-    - name: Install
+    - name: Install and Build
       run: |
         npm ci
         npm run build
+        
     - name: Deploy
       uses: JamesIves/github-pages-deploy-action@v4
       with:
