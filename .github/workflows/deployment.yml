@@ -3,13 +3,15 @@ on:
   push:
     branches:
       - master  
+permissions:
+  contents: write
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     concurrency: ci-${{github.ref}}
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Configure Node
       uses: actions/setup-node@v1
@@ -21,7 +23,7 @@ jobs:
         npm ci
         npm run build
     - name: Deploy
-      uses: James Ives/github-pages-deploy-action@v4
+      uses: JamesIves/github-pages-deploy-action@v4
       with:
         folder: ./www
         branch: gh-pages
