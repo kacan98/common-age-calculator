@@ -2,7 +2,7 @@
 
 <p align="center">
  <a href="https://kacan98.github.io/common-age-calculator" target="_blank">
-    <img src="./src/assets/screenshot.png" alt="app-screenshot" height="320px"/>
+    <img src="./src/assets/screenshot.png" alt="app-screenshot" height="520px"/>
   </a>
   <br>
   <em>Common age calculator takes in birthdays and calculates a common, round birhday
