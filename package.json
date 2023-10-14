@@ -6,7 +6,6 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "build:gh-pages": "ng build --base-href /common-age-calculator/",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "ng lint",
