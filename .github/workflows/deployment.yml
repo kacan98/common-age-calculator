@@ -2,13 +2,7 @@ name: Build and Deploy
 on:
   push:
     branches:
-      - master  
-permissions:
-  pages: write      # to deploy to Pages
-  id-token: write   # to verify the deployment originates from an appropriate source
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
+      - main  
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -24,7 +18,10 @@ jobs:
       
     - name: Install
       run: |
-        git config --global user.email "kacan@dynaway.com"
-        git config --global user.name "Karel Čančara"
-        npm install
-        npm run addToGithubPages
+        npm ci
+        npm run build
+    - name: Deploy
+      uses: James Ives/github-pages-deploy-action@v4
+      with:
+        folder: ./www
+        branch: gh-pages
