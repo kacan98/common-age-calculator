@@ -24,5 +24,7 @@ jobs:
       
     - name: Install
       run: |
+        git config --global user.email "kacan@dynaway.com"
+        git config --global user.name "Karel Čančara"
         npm install
         npm run addToGithubPages
