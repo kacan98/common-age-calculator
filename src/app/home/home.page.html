@@ -27,8 +27,6 @@
   <ion-item color="success" class="result-container" *ngIf="result && people">
     <div class="result-content" *ngIf="people.length > 1; else justOne">
       {{result | date : 'dd. MM. YYYY'}}
-<!--      >{{((resultIsBeforeToday ? 'These people were x on the y' :'You will be x on the y')| translate:{date:(result | date : 'dd. MM. YYYY'),-->
-<!--      targetNrOfYears})}} -->
       </div>
     <ng-template #justOne>
       <ion-text class="ion-padding-vertical just-one-person-result"
