@@ -5,8 +5,9 @@
     <img src="./src/assets/screenshot.png" alt="app-screenshot" height="520px"/>
   </a>
   <br>
-  <em>Common age calculator takes in birthdays and calculates a common, round birhday
-    <br> for everyone added. It's written with Angular (TypeScript) and Ionic.</em>
+  <em>Common age calculator calculates a collective birthday by adding up everyone's ages to reach a milestone, 
+    like when a group turns a combined age of (2/3/5/10)00 years. It's developed using Angular and Ionic for a seamless experience on both web and mobile. <br> 
+   </em>
   <br>
 </p>
 
